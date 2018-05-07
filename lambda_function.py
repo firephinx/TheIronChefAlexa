@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         return intent_router(event, context)
 
 def on_launch(event, context):
-    return statement("This is the title", "This is the body")
+    return statement("Welcome to the Iron Chef", "This is the body")
     
 def intent_router(event, context):
     intent = event['request']['intent']['name']
@@ -54,7 +54,21 @@ def confirm_place_order(event, context):
     meat_doneness = intent['slots']['meat_doneness']['value']
     menu_item = intent['slots']['menu_item']['value']
     insertOrderIntoTable(meat_doneness, menu_item)
-    return statement("place_order_intent", "Ok, I will tell the iron chef to make you a " + meat_doneness + " " + menu_item)
+
+    approximatetimetocompletion = ""
+
+    if(meat_doneness == 'rare'):
+    # Wait for the steak to cook
+        approximatetimetocompletion = "8 minutes"
+    elif(meat_doneness == 'medium rare'):
+        approximatetimetocompletion = "15 minutes"
+    elif(meat_doneness == 'medium'):
+        approximatetimetocompletion = "20 minutes"
+    elif(meat_doneness == 'medium well'):
+        approximatetimetocompletion = "25 minutes"
+    elif(meat_doneness == 'well done'):
+        approximatetimetocompletion = "30 minutes"
+    return statement("place_order_intent", "Ok, I will tell the iron chef to make you a " + meat_doneness + " " + menu_item + ". It will take approximately " + approximatetimetocompletion + ".")
     
 def place_order_intent(event, context):
     dialog_state = event['request']['dialogState']
